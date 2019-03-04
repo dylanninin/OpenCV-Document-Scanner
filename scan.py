@@ -187,10 +187,10 @@ class DocScanner(object):
 
         # convert the image to grayscale and blur it slightly
         gray = cv2.cvtColor(rescaled_image, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(gray, (7,7), 0)
+        gray = cv2.GaussianBlur(gray, (7, 7), 0)
 
         # dilate helps to remove potential holes between edge segments
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(MORPH,MORPH))
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (MORPH, MORPH))
         dilated = cv2.dilate(gray, kernel)
 
         # find edges and mark them in the output map using the Canny algorithm
@@ -205,7 +205,7 @@ class DocScanner(object):
             for quad in itertools.combinations(test_corners, 4):
                 points = np.array(quad)
                 points = transform.order_points(points)
-                points = np.array([[p] for p in points], dtype = "int32")
+                points = np.array([[p] for p in points], dtype="int32")
                 quads.append(points)
 
             # get top five quadrilaterals by area
@@ -310,8 +310,7 @@ if __name__ == "__main__":
     group = ap.add_mutually_exclusive_group(required=True)
     group.add_argument("--images", help="Directory of images to be scanned")
     group.add_argument("--image", help="Path to single image to be scanned")
-    ap.add_argument("-i", action='store_true',
-        help = "Flag for manually verifying and/or setting document corners")
+    ap.add_argument("-i", action='store_true', help="Flag for manually verifying and/or setting document corners")
 
     args = vars(ap.parse_args())
     im_dir = args["images"]
